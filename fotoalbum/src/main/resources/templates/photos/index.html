@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="/fragments/resources :: head"></th:block>
+    <title>Photo album</title>
+</head>
+<body>
+<th:block th:replace="/fragments/navbar :: navbar('photos', ${keyword}, true)"></th:block>
+<div class="container pt-3">
+    <h1>Photo album</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Url</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="photo : ${list}" th:object="${photo}">
+            <td th:text="*{title}"></td>
+            <td th:text="*{description}"></td>
+            <td th:text="*{url}"></td>
+            <td>
+                <a th:href="@{|/photos/*{id}|}" class="btn btn-primary btn-sm" title="detail">
+                    <i class="fa-regular fa-image"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+</html>

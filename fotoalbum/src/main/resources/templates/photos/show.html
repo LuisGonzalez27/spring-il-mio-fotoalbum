@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="/fragments/resources :: head"></th:block>
+    <title>Photo detail</title>
+</head>
+<body>
+<th:block th:replace="/fragments/navbar :: navbar('photos', '', false)"></th:block>
+
+<div class="container pt-3" th:object="${photo}">
+    <h1 th:text="*{title}">Photo</h1>
+    <div>
+        <dl>
+            <dt>Description</dt>
+            <dd th:text="*{description}"></dd>
+            <th:block th:unless="${#strings.isEmpty(photo.url)}">
+                <dt>Url</dt>
+                <dd th:text="*{url}"></dd>
+            </th:block>
+        </dl>
+    </div>
+</div>
+
+</body>
+</html>
