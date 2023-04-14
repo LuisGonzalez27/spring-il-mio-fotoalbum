@@ -7,13 +7,24 @@
 <body>
 <th:block th:replace="/fragments/navbar :: navbar('photos', ${keyword}, true)"></th:block>
 <div class="container pt-3">
-    <h1>Photo album</h1>
+    <h1>Photo album
+        <a th:href="@{/photos/create}" title="add photo">
+            <i class="fa-solid fa-circle-plus"></i>
+        </a>
+    </h1>
+
+    <th:block th:if="${message}">
+        <div th:replace="~{/fragments/messages :: alert(${message.type}, ${message.text})}"></div>
+    </th:block>
+
     <table class="table">
         <thead>
         <tr>
             <th>Title</th>
             <th>Description</th>
             <th>Url</th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
         </thead>
@@ -28,9 +39,23 @@
                     <i class="fa-regular fa-image"></i>
                 </a>
             </td>
+            <td>
+                <a th:href="@{|/photos/edit/*{id}|}" class="btn btn-info btn-sm" title="edit">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            </td>
+            <td>
+                <a th:href="@{|/photos/delete/*{id}|}" class="btn btn-danger btn-sm" title="delete">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>
+
+    <th:block th:unless="${list.size() > 0}">
+        <div th:replace="~{/fragments/messages :: alert('INFO', 'The list is empty!')}"></div>
+    </th:block>
 
 </div>
 

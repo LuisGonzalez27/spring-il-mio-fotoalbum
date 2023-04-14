@@ -13,6 +13,8 @@
         <dl>
             <dt>Description</dt>
             <dd th:text="*{description}"></dd>
+            <dt>Visible</dt>
+            <dd th:text="*{visible}"></dd>
             <th:block th:unless="${#strings.isEmpty(photo.url)}">
                 <dt>Url</dt>
                 <dd th:text="*{url}"></dd>

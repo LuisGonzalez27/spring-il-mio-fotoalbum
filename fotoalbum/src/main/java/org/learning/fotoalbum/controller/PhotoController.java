@@ -1,17 +1,21 @@
 package org.learning.fotoalbum.controller;
 
+import jakarta.validation.Valid;
+import org.learning.fotoalbum.exceptions.PhotoNotFoundException;
+import org.learning.fotoalbum.model.AlertMessage;
 import org.learning.fotoalbum.model.Photo;
 import org.learning.fotoalbum.repository.PhotoRepository;
+import org.learning.fotoalbum.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,14 +26,16 @@ public class PhotoController {
 
     @Autowired
     private PhotoRepository photoRepository;
+    @Autowired
+    private PhotoService photoService;
 
     @GetMapping
     public String index(Model model, @RequestParam(name = "q") Optional<String> keyword) {
         List<Photo> photos;
         if (keyword.isEmpty()) {
-            photos = photoRepository.findAll(Sort.by("title"));
+            photos = photoService.getAllPhotos();
         } else {
-            photos = photoRepository.findByTitleContainingIgnoreCase(keyword.get());
+            photos = photoService.getFilterPhotos(keyword.get());
             model.addAttribute("keyword", keyword.get());
         }
         model.addAttribute("list", photos);
@@ -38,13 +44,82 @@ public class PhotoController {
 
     @GetMapping("/{photoId}")
     public String show(@PathVariable("photoId") Integer id, Model model) {
-        Optional<Photo> result = photoRepository.findById(id);
-        if (result.isPresent()) {
-            model.addAttribute("photo", result.get());
+        try {
+            Photo photo = photoService.getById(id);
+            model.addAttribute("photo", photo);
             return "/photos/show";
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Photo witch id " + id + " not found");
+        } catch (PhotoNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Photo with id " + id + " not found");
         }
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("photo", new Photo());
+        return "photos/create";
+    }
+
+    @PostMapping("/create")
+    public String doCreate(@Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult) {
+
+        boolean hasErrors = bindingResult.hasErrors();
+
+        if (!photoService.isValidTitle(formPhoto)) {
+            bindingResult.addError(new FieldError("photo", "title", formPhoto.getTitle(), false, null, null, "Title must be unique"));
+            hasErrors = true;
+        }
+        if (hasErrors) {
+            return "/photos/create";
+        }
+        photoService.createPhoto(formPhoto);
+        return "redirect:/photos";
+    }
+
+    @GetMapping("edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        try {
+            Photo photo = photoService.getById(id);
+            model.addAttribute("photo", photo);
+            return "/photos/edit";
+        } catch (PhotoNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Photo with id " + id + " not found");
+        }
+    }
+
+    @PostMapping("/edit/{id}")
+    public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult) {
+
+        if (!photoService.isValidTitle(formPhoto)) {
+            bindingResult.addError(new FieldError("photo", "title", formPhoto.getTitle(), false, null, null, "Title must be unique"));
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "/photos/edit";
+        }
+        try {
+            Photo updatePhoto = photoService.updateBook(formPhoto, id);
+            return "redirect:/photos/" + Integer.toString(updatePhoto.getId());
+        } catch (PhotoNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Photo with id " + id + " not found");
+        }
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            boolean success = photoService.deleteById(id);
+            if (success) {
+                redirectAttributes.addFlashAttribute("message",
+                        new AlertMessage(AlertMessage.AlertMessageType.SUCCESS, "Photo with id " + id + " deleted"));
+            } else {
+                redirectAttributes.addFlashAttribute("message",
+                        new AlertMessage(AlertMessage.AlertMessageType.ERROR, "Unable to delete photo with id " + id));
+            }
+        } catch (PhotoNotFoundException e) {
+            redirectAttributes.addFlashAttribute("message",
+                    new AlertMessage(AlertMessage.AlertMessageType.ERROR, "Photo with id " + id + " not found"));
+        }
+        return "redirect:/photos";
     }
 
 }

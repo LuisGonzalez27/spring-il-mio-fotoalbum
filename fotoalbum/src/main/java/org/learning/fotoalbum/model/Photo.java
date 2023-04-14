@@ -1,6 +1,9 @@
 package org.learning.fotoalbum.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
@@ -10,13 +13,19 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @NotNull(message = "Il campo Titolo deve essere compilato")
+    @NotEmpty(message = "Il campo Titolo deve essere compilato")
     @Column(nullable = false, unique = true)
     private String title;
+
+    @NotNull(message = "Il campo Description deve essere compilato")
+    @NotEmpty(message = "Il campo Description deve essere compilato")
+    @Size(min = 3, max = 250)
     private String description;
     private String url;
+
     @Column(nullable = false)
-    private Boolean isVisible;
+    private Boolean visible;
 
     @ManyToMany
     @JoinTable(
@@ -24,6 +33,17 @@ public class Photo {
             joinColumns = @JoinColumn(name = "photo_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
+
+    public Photo() {
+        super();
+    }
+
+    public Photo(String title, String description, String url, Boolean visible) {
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.visible = visible;
+    }
 
     public Integer getId() {
         return id;
@@ -58,11 +78,11 @@ public class Photo {
     }
 
     public Boolean getVisible() {
-        return isVisible;
+        return visible;
     }
 
     public void setVisible(Boolean visible) {
-        isVisible = visible;
+        this.visible = visible;
     }
 
     public Set<Category> getCategories() {
