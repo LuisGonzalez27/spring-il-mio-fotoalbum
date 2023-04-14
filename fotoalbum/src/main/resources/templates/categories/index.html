@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="/fragments/resources :: head"></th:block>
+    <title>Categories</title>
+</head>
+<body>
+
+<th:block th:replace="/fragments/navbar :: navbar('categories', '', false)"></th:block>
+
+<div class="container pt-3">
+    <h1>Categories</h1>
+    <!-- Message -->
+    <th:block th:if="${message}">
+        <div th:replace="~{/fragments/messages :: alert(${message.type}, ${message.text})}"></div>
+    </th:block>
+
+    <div class="row">
+        <div class="col-6">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="item : ${list}">
+                    <h5 th:text="${item.name}"></h5>
+                    <a th:href="@{/categories(id=${item.id})}" class="btn btn-info btn-sm" title="edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a th:href="@{|/categories/delete/${item.id}|}" class="btn btn-danger btn-sm" title="delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-6">
+            <form id="category-form" method="post" th:action="@{/categories/save}" th:object="${categoryList}">
+                <input type="hidden" th:field="*{id}">
+                <!-- Name -->
+                <h2>Add new category</h2>
+                <div class="col-12">
+                    <label class="form-label" for="name">Name*</label>
+                    <input type="text" id="name" class="form-control" th:field="*{name}"
+                           th:errorClass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-12 pt-2">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -5,6 +5,7 @@ import org.learning.fotoalbum.exceptions.PhotoNotFoundException;
 import org.learning.fotoalbum.model.AlertMessage;
 import org.learning.fotoalbum.model.Photo;
 import org.learning.fotoalbum.repository.PhotoRepository;
+import org.learning.fotoalbum.service.CategoryService;
 import org.learning.fotoalbum.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -28,6 +29,9 @@ public class PhotoController {
     private PhotoRepository photoRepository;
     @Autowired
     private PhotoService photoService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping
     public String index(Model model, @RequestParam(name = "q") Optional<String> keyword) {
@@ -56,11 +60,12 @@ public class PhotoController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("photo", new Photo());
+        model.addAttribute("categoryList", categoryService.getAll());
         return "photos/create";
     }
 
     @PostMapping("/create")
-    public String doCreate(@Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult) {
+    public String doCreate(@Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult, Model model) {
 
         boolean hasErrors = bindingResult.hasErrors();
 
@@ -69,6 +74,7 @@ public class PhotoController {
             hasErrors = true;
         }
         if (hasErrors) {
+            model.addAttribute("categoryList", categoryService.getAll());
             return "/photos/create";
         }
         photoService.createPhoto(formPhoto);
@@ -80,6 +86,7 @@ public class PhotoController {
         try {
             Photo photo = photoService.getById(id);
             model.addAttribute("photo", photo);
+            model.addAttribute("categoryList", categoryService.getAll());
             return "/photos/edit";
         } catch (PhotoNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Photo with id " + id + " not found");
@@ -87,13 +94,14 @@ public class PhotoController {
     }
 
     @PostMapping("/edit/{id}")
-    public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult) {
+    public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult, Model model) {
 
         if (!photoService.isValidTitle(formPhoto)) {
             bindingResult.addError(new FieldError("photo", "title", formPhoto.getTitle(), false, null, null, "Title must be unique"));
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("categoryList", categoryService.getAll());
             return "/photos/edit";
         }
         try {

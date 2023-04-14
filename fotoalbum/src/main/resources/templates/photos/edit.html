@@ -27,12 +27,24 @@
 
         <!-- Description -->
         <div class="col-12">
-            <label class="form-label" for="description">Description</label>
+            <label class="form-label" for="description">Description*</label>
             <input type="text" id="description" class="form-control" th:field="*{description}"
                    th:errorClass="is-invalid">
             <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
                 <ul>
                     <li th:each="err : ${#fields.errors('description')}" th:text="${err}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Url -->
+        <div class="col-12">
+            <label class="form-label" for="description">Url</label>
+            <input type="text" id="url" class="form-control" th:field="*{url}"
+                   th:errorClass="is-invalid">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('url')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('url')}" th:text="${err}"></li>
                 </ul>
             </div>
         </div>
@@ -44,6 +56,16 @@
 
             <div th:if="${#fields.hasErrors('visible')}" class="invalid-feedback">
                 <p th:each="err : ${#fields.errors('visible')}" th:text="${err}"></p>
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="col-12">
+            <h4>Categories</h4>
+            <div class="form-check" th:each="categ : ${categoryList}">
+                <input class="form-check-input" type="checkbox" th:value="${categ.id}"
+                       th:id="|categ_${categ.id}|" th:field="*{categories}">
+                <label class="form-check-label" th:for="|categ_${categ.id}|" th:text="${categ.name}"></label>
             </div>
         </div>
 

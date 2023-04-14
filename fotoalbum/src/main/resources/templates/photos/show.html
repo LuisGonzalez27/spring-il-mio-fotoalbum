@@ -19,6 +19,10 @@
                 <dt>Url</dt>
                 <dd th:text="*{url}"></dd>
             </th:block>
+            <dt>Categories</dt>
+            <dd>
+                <span th:each="categ : *{categories}" th:text="${categ.name}" class="me-1"></span>
+            </dd>
         </dl>
     </div>
 </div>
