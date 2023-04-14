@@ -14,3 +14,12 @@ INSERT INTO db_fotoalbum.categories (name) VALUES('Halloween');
 INSERT INTO db_fotoalbum.categories (name) VALUES('Wedding');
 
 INSERT INTO db_fotoalbum.photo_category (photo_id, category_id) VALUES(1, 1);
+
+INSERT INTO db_fotoalbum.users (username, password) VALUES('Admin', '{noop}luis');
+INSERT INTO db_fotoalbum.users (username, password) VALUES('Luis','{noop}miguel');
+
+INSERT INTO db_fotoalbum.roles (id, name) VALUES(1, 'ADMIN');
+INSERT INTO db_fotoalbum.roles (id, name) VALUES(2, 'USER');
+
+INSERT INTO db_fotoalbum.users_roles(user_id, roles_id) VALUES(1, 1);
+INSERT INTO db_fotoalbum.users_roles(user_id, roles_id) VALUES(2, 2);
