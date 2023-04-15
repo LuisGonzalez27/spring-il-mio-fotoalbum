@@ -1,6 +1,7 @@
 //GLOBAL VARIABLES
 const PHOTO_URL = 'http://localhost:8080/api/v1/photos';
 const contentElement = document.getElementById("content");
+const formSearch = document.getElementById("form-search")
 
 //API
 const getPhoto = async() => {
@@ -11,7 +12,8 @@ const getPhoto = async() => {
 
 //DOM
 const createPhotoItem = (item) => {
-    return `<div class="col-4"> 
+    return `
+    <div class="col-4"> 
                 <div class="card h-100">
                     <img src="${item.url}" class="card-img-top" alt="${item.title}">
                     <div class="card-body">
@@ -25,7 +27,8 @@ const createPhotoItem = (item) => {
 const createPhotoList = (data) => {
     console.log(data);
 
-    let list = `<div class="row gy-4">`;
+    let list = ` <h1>Photo album</h1>
+    <div class="row gy-4">`;
     
     data.forEach((element) => {
         list += createPhotoItem(element);
@@ -34,6 +37,7 @@ const createPhotoList = (data) => {
     list += '</div>';
     return list;
 };
+
 
 const loadData = async() => {
     const response = await getPhoto();
@@ -51,6 +55,36 @@ const loadData = async() => {
         console.log('ERROR');
     }
 };
+
+function filterByTitle(photo){
+    const inputSearch = document.getElementById('search-title');
+    const inputSearchValue = inputSearch.value;
+
+    if (inputSearchValue) {
+        const filterPhoto = photo.filter((element) =>
+        element.title.toLowerCase().includes(inputSearchValue.toLowerCase())
+      );
+      console.log(filterPhoto );
+      return filterPhoto.length > 0 ? filterPhoto : null;
+
+    } else {
+        loadData();
+    }
+}
+
+formSearch.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const allPhoto = await getPhoto();
+    const allPhotoJson = await allPhoto.json();
+    const filterList = filterByTitle(allPhotoJson);
+    //render html
+    if (filterList) {
+        contentElement.innerHTML = createPhotoList(filterList);
+    } else {
+        contentElement.innerHTML = `<h1>Sorry, there are no results available.</h1>`;
+    }
+});
 
 //Global code
 loadData();
