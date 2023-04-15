@@ -3,12 +3,16 @@ const PHOTO_URL = 'http://localhost:8080/api/v1/photos';
 const contentElement = document.getElementById("content");
 const formSearch = document.getElementById("form-search")
 
+const CONTACT_URL = 'http://localhost:8080/api/v1/contacts/create';
+const contactForm = document.getElementById('contact-form');
+
 //API
 const getPhoto = async() => {
     const response = await fetch(PHOTO_URL);
     console.log(response);
     return response;
 };
+
 
 //DOM
 const createPhotoItem = (item) => {
@@ -49,7 +53,9 @@ const loadData = async() => {
         //data filtered for visibility in the front end
         const visibleFilter = data.filter((element) => element.visible === true);
         //render html
-        contentElement.innerHTML = createPhotoList(visibleFilter);
+        if (contentElement) {
+            contentElement.innerHTML = createPhotoList(visibleFilter);
+        }
 
     } else {
         console.log('ERROR');
@@ -86,5 +92,42 @@ formSearch.addEventListener("submit", async (event) => {
     }
 });
 
+//Methods to send the contact form
+const postContact = async (jsonData) => {
+    const fetchOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+    },
+    body: jsonData,  
+      
+    };
+    const response = await fetch(CONTACT_URL, fetchOptions);
+    return response;
+};
+
+const saveContact = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formDataObj = Object.fromEntries(formData.entries());
+    
+    const formDataJson = JSON.stringify(formDataObj);
+
+    const response = await postContact(formDataJson);
+    
+    const responseBody = await response.json();
+
+    if (response.ok) {
+      loadData();
+      event.target.reset();
+    } else {
+      console.log('ERROR');
+      console.log(response.status);
+      console.log(responseBody);
+    }
+};
+
 //Global code
+
 loadData();
+contactForm.addEventListener("submit", saveContact);

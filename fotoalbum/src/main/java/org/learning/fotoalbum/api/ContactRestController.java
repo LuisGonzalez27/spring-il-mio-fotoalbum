@@ -24,9 +24,15 @@ public class ContactRestController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public Contact getContactList(@RequestBody Contact contact) {
-        return contactService.createContact(contact);
+        try {
+            return contactService.createContact(contact);
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
 }
