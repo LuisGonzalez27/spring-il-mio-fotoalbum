@@ -13,6 +13,7 @@ const getPhoto = async() => {
 const createPhotoItem = (item) => {
     return `<div class="col-4"> 
                 <div class="card h-100">
+                    <img src="${item.url}" class="card-img-top" alt="${item.title}">
                     <div class="card-body">
                         <h5 class="card-title">${item.title}</h5>
                         <p class="card-text">${item.description}</p>

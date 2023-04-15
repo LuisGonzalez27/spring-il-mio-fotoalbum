@@ -14,18 +14,21 @@
         <dl>
             <dt>Description</dt>
             <dd th:text="*{description}"></dd>
-            <dt>Visible</dt>
-            <dd th:text="*{visible}"></dd>
-            <th:block th:unless="${#strings.isEmpty(photo.url)}">
-                <dt>Url</dt>
-                <dd th:text="*{url}"></dd>
-            </th:block>
+            <dt>Visible on site web</dt>
+            <dd th:text="*{visible} ? 'Yes' : 'No'"></dd>
             <dt>Categories</dt>
             <dd>
                 <span th:each="categ : *{categories}" th:text="${categ.name}" class="me-1"></span>
+                <div th:if="${photo.categories.size() == 0 || photo.categories == null}">Still no category</div>
             </dd>
+            <dt>Url</dt>
+            <dd th:text="*{url}"></dd>
         </dl>
     </div>
+    <div class="col-6">
+        <img th:src="@{*{url}}" th:alt="*{title}">
+    </div>
+
 </div>
 
 </body>

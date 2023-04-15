@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.URL;
 
 import java.util.Set;
 
@@ -15,15 +16,16 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull(message = "Il campo Titolo deve essere compilato")
     @NotEmpty(message = "Il campo Titolo deve essere compilato")
     @Column(nullable = false, unique = true)
     private String title;
 
-    @NotNull(message = "Il campo Description deve essere compilato")
     @NotEmpty(message = "Il campo Description deve essere compilato")
-    @Size(min = 3, max = 250)
+    @Size(min = 3, max = 250, message = "La Description deve essere compresa tra 3 e 250")
     private String description;
+
+    @URL(message = "Il URL deve essere valido")
+    @NotEmpty(message = "Url deve essere inserito")
     private String url;
 
     @Column(nullable = false)

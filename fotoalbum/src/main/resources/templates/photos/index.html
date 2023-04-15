@@ -24,8 +24,7 @@
             <th>Title</th>
             <th>Description</th>
             <th>Url</th>
-            <th></th>
-            <th></th>
+            <th>Visibile</th>
             <th></th>
         </tr>
         </thead>
@@ -33,20 +32,22 @@
         <tbody>
         <tr th:each="photo : ${list}" th:object="${photo}">
             <td th:text="*{title}"></td>
-            <td th:text="*{description}"></td>
+            <td>
+                <span th:text="*{description}" class="d-inline-block text-truncate" style="max-width: 150px;"></span>
+            </td>
             <td th:text="*{url}"></td>
+            <td th:text="*{visible} ? 'Yes' : 'No' "></td>
+
             <td>
                 <a th:href="@{|/photos/*{id}|}" class="btn btn-primary btn-sm" title="detail">
                     <i class="fa-regular fa-image"></i>
                 </a>
-            </td>
-            <td>
+
                 <a th:href="@{|/photos/edit/*{id}|}" class="btn btn-info btn-sm"
                    title="edit" sec:authorize="hasAuthority('ADMIN')">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </a>
-            </td>
-            <td>
+                
                 <a th:href="@{|/photos/delete/*{id}|}" class="btn btn-danger btn-sm"
                    title="delete" sec:authorize="hasAuthority('ADMIN')">
                     <i class="fa-solid fa-trash"></i>
@@ -55,6 +56,9 @@
         </tr>
         </tbody>
     </table>
+
+    <!-- Block level -->
+
 
     <th:block th:unless="${list.size() > 0}">
         <div th:replace="~{/fragments/messages :: alert('INFO', 'The list is empty!')}"></div>

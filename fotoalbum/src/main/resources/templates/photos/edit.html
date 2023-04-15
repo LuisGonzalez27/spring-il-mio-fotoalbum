@@ -51,12 +51,8 @@
 
         <!-- Visible -->
         <div>
-            <label for="visible" class="form-label">Visibile</label>
-            <input type="checkbox" class="form-checkbox" id="visible" value="false" th:field="*{visible}"/>
-
-            <div th:if="${#fields.hasErrors('visible')}" class="invalid-feedback">
-                <p th:each="err : ${#fields.errors('visible')}" th:text="${err}"></p>
-            </div>
+            <label for="visible" class="form-label">Visible on site web</label>
+            <input type="checkbox" class="form-check-input" id="visible" value="false" th:field="*{visible}"/>
         </div>
 
         <!-- Categories -->

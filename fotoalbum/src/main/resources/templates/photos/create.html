@@ -39,23 +39,20 @@
 
         <!-- Url -->
         <div class="col-12">
-            <label class="form-label" for="url">Url</label>
+            <label class="form-label" for="url">Url*</label>
             <input type="text" id="url" class="form-control" th:field="*{url}"
                    th:errorClass="is-invalid">
             <div class="invalid-feedback" th:if="${#fields.hasErrors('url')}">
                 <ul>
-                    <li th:each="err : ${#fields.errors('description')}" th:text="${err}"></li>
+                    <li th:each="err : ${#fields.errors('url')}" th:text="${err}"></li>
                 </ul>
             </div>
         </div>
 
         <!-- Visible -->
         <div>
+            <label for="visible" class="form-label">Visible on site web</label>
             <input type="checkbox" class="form-check-input" id="visible" value="false" th:field="*{visible}"/>
-            <label for="visible" class="form-label">Visibile</label>
-            <div th:if="${#fields.hasErrors('visible')}" class="invalid-feedback">
-                <p th:each="err : ${#fields.errors('visible')}" th:text="${err}"></p>
-            </div>
         </div>
 
         <!-- categories -->
