@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <th:block th:replace="/fragments/resources :: head"></th:block>
     <title>Photo album</title>
@@ -8,7 +9,7 @@
 <th:block th:replace="/fragments/navbar :: navbar('photos', ${keyword}, true)"></th:block>
 <div class="container pt-3">
     <h1>Photo album
-        <a th:href="@{/photos/create}" title="add photo">
+        <a th:href="@{/photos/create}" title="add photo" sec:authorize="hasAuthority('ADMIN')">
             <i class="fa-solid fa-circle-plus"></i>
         </a>
     </h1>
@@ -40,12 +41,14 @@
                 </a>
             </td>
             <td>
-                <a th:href="@{|/photos/edit/*{id}|}" class="btn btn-info btn-sm" title="edit">
+                <a th:href="@{|/photos/edit/*{id}|}" class="btn btn-info btn-sm"
+                   title="edit" sec:authorize="hasAuthority('ADMIN')">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </a>
             </td>
             <td>
-                <a th:href="@{|/photos/delete/*{id}|}" class="btn btn-danger btn-sm" title="delete">
+                <a th:href="@{|/photos/delete/*{id}|}" class="btn btn-danger btn-sm"
+                   title="delete" sec:authorize="hasAuthority('ADMIN')">
                     <i class="fa-solid fa-trash"></i>
                 </a>
             </td>

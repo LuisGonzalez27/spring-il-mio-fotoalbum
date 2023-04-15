@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <th:block th:replace="/fragments/resources :: head"></th:block>
     <title>Categories</title>
@@ -20,16 +21,18 @@
             <ul class="list-group">
                 <li class="list-group-item" th:each="item : ${list}">
                     <h5 th:text="${item.name}"></h5>
-                    <a th:href="@{/categories(id=${item.id})}" class="btn btn-info btn-sm" title="edit">
+                    <a th:href="@{/categories(id=${item.id})}" class="btn btn-info btn-sm"
+                       title="edit" sec:authorize="hasAuthority('ADMIN')">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a th:href="@{|/categories/delete/${item.id}|}" class="btn btn-danger btn-sm" title="delete">
+                    <a th:href="@{|/categories/delete/${item.id}|}" class="btn btn-danger btn-sm"
+                       title="delete" sec:authorize="hasAuthority('ADMIN')">
                         <i class="fa-solid fa-trash"></i>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="col-6">
+        <div class="col-6" sec:authorize="hasAuthority('ADMIN')">
             <form id="category-form" method="post" th:action="@{/categories/save}" th:object="${categoryList}">
                 <input type="hidden" th:field="*{id}">
                 <!-- Name -->

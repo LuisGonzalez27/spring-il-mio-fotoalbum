@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
      th:fragment="navbar(current, keyword, showSearch)">
@@ -28,6 +29,11 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
+            
+            <div class="ms-3 d-flex align-items-end">
+                <h5 sec:authentication="name" style="color: white; margin-right: 10px;"></h5>
+                <a class="btn btn-light" th:href="@{/logout}">Logout</a>
+            </div>
         </div>
     </div>
 </nav>
