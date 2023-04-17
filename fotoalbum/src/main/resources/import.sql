@@ -30,3 +30,7 @@ INSERT INTO db_fotoalbum.roles (id, name) VALUES(2, 'USER');
 
 INSERT INTO db_fotoalbum.users_roles(user_id, roles_id) VALUES(1, 1);
 INSERT INTO db_fotoalbum.users_roles(user_id, roles_id) VALUES(2, 2);
+
+INSERT INTO db_fotoalbum.contacts (email, message)VALUES('admin@tiscali.it', 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which dont look even slightly believable.');
+INSERT INTO db_fotoalbum.contacts (email, message)VALUES('luis@tiscali.it', 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form');
+INSERT INTO db_fotoalbum.contacts (email, message)VALUES('miguel@tiscali.it', 'There are many variations of passages of Lorem Ipsum available.');

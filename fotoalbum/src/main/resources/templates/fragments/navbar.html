@@ -21,6 +21,10 @@
                     <a class="nav-link" th:href="@{/categories}"
                        th:classAppend="${current == 'categories'} ? active : not-active">Categories</a>
                 </li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                    <a class="nav-link" th:href="@{/contacts}"
+                       th:classAppend="${current == 'contacts'} ? active : not-active">Contacts</a>
+                </li>
             </ul>
             <form th:if="${showSearch}" class="d-flex" role="search" method="get" th:action="@{/photos}">
                 <input class="form-control me-2" type="search" placeholder="Search by title"
@@ -29,8 +33,8 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
-            
-            <div class="ms-3 d-flex align-items-end">
+
+            <div class="ms-2 d-flex align-items-end">
                 <h5 sec:authentication="name" style="color: white; margin-right: 10px;"></h5>
                 <a class="btn btn-light" th:href="@{/logout}">Logout</a>
             </div>

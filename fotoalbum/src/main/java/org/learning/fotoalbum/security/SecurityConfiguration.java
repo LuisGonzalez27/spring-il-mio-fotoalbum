@@ -40,7 +40,8 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .requestMatchers("/categories/create", "/categories/save/**", "/categories/delete/**").hasAuthority("ADMIN")
+                .requestMatchers("/categories/create", "/categories/save/**", "/categories/delete/**", "/contacts")
+                .hasAuthority("ADMIN")
                 .requestMatchers("/photos/create", "/photos/edit/**", "/photos/delete/**")
                 .hasAnyAuthority("ADMIN")
                 .requestMatchers("/photos", "/photos/**", "/categories")
