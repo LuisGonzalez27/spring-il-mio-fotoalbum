@@ -9,6 +9,12 @@ img {
     border-radius: 10%;
 }
 
+.cover {
+    object-fit: cover;
+    width: 300x;
+    height: 400px;
+}
+
 .title {
     font-size: 1.5em;
     font-weight: 900;
@@ -49,4 +55,5 @@ img {
     background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(5, 5, 5, 0.9220063025210083) 35%, rgba(0, 212, 255, 1) 100%);
     color: white;
     transform: rotateY(180deg);
+    padding: 0 20px;
 }

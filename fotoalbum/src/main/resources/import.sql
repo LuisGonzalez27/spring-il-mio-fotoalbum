@@ -4,6 +4,7 @@ INSERT INTO db_fotoalbum.photos (description, visible, title, url) VALUES('Una s
 INSERT INTO db_fotoalbum.photos (description, visible, title, url) VALUES('Spiaggia con pietre', 1, 'Spiaggia brutta', 'https://picsum.photos/id/13/300/400');
 INSERT INTO db_fotoalbum.photos (description, visible, title, url) VALUES('Muso di gatto', 1, 'Gatto', 'https://picsum.photos/id/40/300/400');
 INSERT INTO db_fotoalbum.photos (description, visible, title, url) VALUES('Una cascata è quel punto in cui la acqua di un fiume o di un torrente', 1, 'Cascata', 'https://picsum.photos/id/15/300/400');
+INSERT INTO db_fotoalbum.photos (description, visible, title, url) VALUES('Una ragazza si trova in un campo di grano', 1, 'Girl', 'https://picsum.photos/id/64/300/400');
 
 INSERT INTO db_fotoalbum.categories (name) VALUES('Nature');
 INSERT INTO db_fotoalbum.categories (name) VALUES('Animals');

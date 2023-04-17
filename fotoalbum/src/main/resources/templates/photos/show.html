@@ -9,7 +9,16 @@
 <th:block th:replace="/fragments/navbar :: navbar('photos', '', false)"></th:block>
 
 <div class="container pt-3" th:object="${photo}">
-    <h1 th:text="*{title}">Photo</h1>
+    <div class="d-flex align-items-center">
+        <h1 th:text="*{title}"></h1>
+        <a th:href="@{|/photos/edit/*{id}|}" class="btn btn-info btn-sm ms-2" title="edit"
+           sec:authorize="hasAuthority('ADMIN')">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </a>
+        <a class="btn btn-dark btn-sm ms-2" th:href="@{/photos}" title="photos">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+    </div>
     <div>
         <dl>
             <dt>Description</dt>
@@ -26,7 +35,7 @@
         </dl>
     </div>
     <div class="col-6">
-        <img th:src="@{*{url}}" th:alt="*{title}">
+        <img th:src="@{*{url}}" th:alt="*{title}" class="contain">
     </div>
 
 </div>

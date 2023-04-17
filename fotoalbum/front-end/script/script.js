@@ -15,17 +15,29 @@ const getPhoto = async () => {
 
 
 //DOM
+const createCategoryList = (categories) => {
+    let categoriesHtml = "<div>";
+    categories.forEach(el =>{
+        categoriesHtml += `
+        <span class="mx-1">${el.name}</span>
+        `;
+    });
+    categoriesHtml +="</div>"
+    return categoriesHtml;
+};
+
 const createPhotoItem = (item) => {
     return `
     <div class="col-12 col-xxl-3 col-lg-4 col-md-6"> 
         <div class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front">
-                    <img src="${item.url}" alt="${item.title}">
+                    <img  class="cover" src="${item.url}" alt="${item.title}">
                 </div>
                 <div class="flip-card-back">
                     <p class="title">${item.title}</p>
                     <p>${item.description}</p>
+                    ${createCategoryList(item.categories)}
                 </div>
             </div>
         </div>

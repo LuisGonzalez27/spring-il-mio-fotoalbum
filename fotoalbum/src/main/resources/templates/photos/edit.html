@@ -28,8 +28,8 @@
         <!-- Description -->
         <div class="col-12">
             <label class="form-label" for="description">Description*</label>
-            <input type="text" id="description" class="form-control" th:field="*{description}"
-                   th:errorClass="is-invalid">
+            <textarea id="description" class="form-control" th:field="*{description}"
+                      th:errorClass="is-invalid" rows="2"></textarea>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
                 <ul>
                     <li th:each="err : ${#fields.errors('description')}" th:text="${err}"></li>
